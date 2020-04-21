@@ -287,7 +287,8 @@ class Refund
     private function refundCreditMemo($payment, Order $order, Order $refund, $preAuthUniqueId)
     {
         $paymentCode = $this->paymentHelper->getPaymentCodeByMop($payment->mopId);
-
+         this->logger->setIdentifier(__METHOD__)->error('test', $refund);
+        
         $this->logger->setIdentifier(__METHOD__)->debug(
             'Api.doRefund',
             [
