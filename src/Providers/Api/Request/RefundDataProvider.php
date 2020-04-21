@@ -36,12 +36,15 @@ class RefundDataProvider extends DataProviderAbstract implements DataProviderOrd
      */
     public function getPartialRefundData($paymentCode, Order $order, Order $refund, $preAuthUniqueId)
     {
+        
+        
         $requestParams = $this->getDataFromOrder($paymentCode, $order, $preAuthUniqueId);
 
         $requestParams['order'] = $this->getOrderData($refund);
 
         $this->validator->validate($requestParams);
 
+          this->logger->setIdentifier(__METHOD__)->debug('testpppp', $requestParams);
         return $requestParams;
     }
 }
