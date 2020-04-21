@@ -3,12 +3,15 @@
 namespace Payone\Providers\Api\Request;
 
 use Plenty\Modules\Order\Models\Order;
+use Plenty\Plugin\Log\Loggable;
 
 /**
  * Class RefundDataProvider
  */
 class RefundDataProvider extends DataProviderAbstract implements DataProviderOrder
 {
+   use Loggable;
+
     /**
      * {@inheritdoc}
      */
@@ -41,10 +44,10 @@ class RefundDataProvider extends DataProviderAbstract implements DataProviderOrd
         $requestParams = $this->getDataFromOrder($paymentCode, $order, $preAuthUniqueId);
 
         $requestParams['order'] = $this->getOrderData($refund);
-
+      
         $this->validator->validate($requestParams);
-
-          this->logger->setIdentifier(__METHOD__)->debug('testpppp', $requestParams);
+          $this->getLogger(__METHOD__)->error('refunddata', $requestParams);
+          
         return $requestParams;
     }
 }
