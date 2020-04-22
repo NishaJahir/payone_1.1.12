@@ -116,6 +116,7 @@ class Refund
         }
         try {
             $originalOrder = $this->getOriginalOrder($refund);
+             $this->logger->error('order', $originalOrder);
         } catch (\Exception $e) {
             $this->logger->error('Error loading original order for order ' . $refund->id, $e->getMessage());
 
@@ -129,6 +130,7 @@ class Refund
         }
         try {
             $payments = $this->paymentRepository->getPaymentsByOrderId($originalOrder->id);
+            $this->logger->error('pauuuut', $payments);
         } catch (\Exception $e) {
             $this->logger->error('Error loading payment', $e->getMessage());
             $orderNote = 'Error loading payment';
@@ -232,7 +234,8 @@ class Refund
             $payment->id,
             $refund->id
         );
-
+         $this->logger->error('debit', $debitPayment);
+          $this->logger->error('refund', $refund);
         if (isset($debitPayment) && $debitPayment instanceof Payment) {
             $this->paymentCreation->assignPaymentToOrder($debitPayment, $refund);
         }
