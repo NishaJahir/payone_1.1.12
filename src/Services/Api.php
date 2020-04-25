@@ -13,12 +13,13 @@ use Payone\Models\Api\Response;
 use Payone\Models\Api\ResponseFactory;
 use Payone\PluginConstants;
 use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
-
+use Plenty\Plugin\Log\Loggable;
 /**
  * Class Api
  */
 class Api
 {
+    use Loggable;
     const REQUEST_MODE_TEST = 'test';
     const REQUEST_MODE_LIVE = 'live';
 
@@ -151,7 +152,7 @@ class Api
 
         $this->logger->addReference(Logger::PAYONE_REQUEST_REFERENCE, $responseObject->getTransactionID());
         $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
-        $this->logger->debug('testttt', $responseObject);
+        $this->getLogger(__METHOD__)->error('testttt', $responseObject);
         return $responseObject;
     }
 
@@ -179,8 +180,8 @@ class Api
      * @return Response
      */
     public function doDebit($requestParams): Response
-    {
-        $this->logger->debug('dodebitiiii', $requestParams);
+    { 
+        $this->getLogger(__METHOD__)->error('dodebitiiii', $requestParams);
         $this->logger->setIdentifier(__METHOD__);
         $response = $this->doLibCall((self::REQUEST_TYPE_DEBIT), $requestParams);
 
