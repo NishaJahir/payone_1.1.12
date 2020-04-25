@@ -151,7 +151,7 @@ class Api
 
         $this->logger->addReference(Logger::PAYONE_REQUEST_REFERENCE, $responseObject->getTransactionID());
         $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
-
+        $this->logger->debug('testttt', $responseObject);
         return $responseObject;
     }
 
@@ -180,6 +180,7 @@ class Api
      */
     public function doDebit($requestParams): Response
     {
+        $this->logger->debug('dodebitiiii', $requestParams);
         $this->logger->setIdentifier(__METHOD__);
         $response = $this->doLibCall((self::REQUEST_TYPE_DEBIT), $requestParams);
 
