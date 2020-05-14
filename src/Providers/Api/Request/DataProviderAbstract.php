@@ -282,6 +282,8 @@ abstract class DataProviderAbstract
      */
     protected function getBirthDay(Address $addressObj)
     {
+        $this->getLogger(__METHOD__)->error('called',$addressObj);
+        
         if(!isset($addressObj->birthday) || !strlen($addressObj->birthday)) {
             return null;
         }
