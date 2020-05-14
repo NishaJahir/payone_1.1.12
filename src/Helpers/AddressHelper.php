@@ -7,12 +7,14 @@ use Plenty\Modules\Account\Address\Models\Address as AddressModel;
 use Plenty\Modules\Account\Address\Models\AddressRelationType;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Order\Models\Order;
+use Plenty\Plugin\Log\Loggable;
 
 /**
  * Class AddressHelper
  */
 class AddressHelper
 {
+    use Loggable;
     /**
      * @var AddressRepositoryContract
      */
@@ -35,6 +37,8 @@ class AddressHelper
      */
     public function getBasketBillingAddress(Basket $basket)
     {
+        $rest = this->loadAddress($this->getBillingAddressIdFromCart($basket));
+        $this->getLogger(__METHOD__)->error('test', $rest);
         return $this->loadAddress($this->getBillingAddressIdFromCart($basket));
     }
 
