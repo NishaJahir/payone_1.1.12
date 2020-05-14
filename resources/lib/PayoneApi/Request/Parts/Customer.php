@@ -2,8 +2,11 @@
 
 namespace PayoneApi\Request\Parts;
 
+use Plenty\Plugin\Log\Loggable;
+
 class Customer
 {
+    use Loggable;
     private $salutation;
     private $title;
     private $firstname;
@@ -133,6 +136,7 @@ class Customer
      */
     public function getBirthday()
     {
+        $this->getLogger(__METHOD__)->error('bir', $this->birthday);
         return str_replace('-', '', $this->birthday);
     }
 
