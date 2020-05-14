@@ -37,8 +37,7 @@ class AddressHelper
      */
     public function getBasketBillingAddress(Basket $basket)
     {
-        $rest = this->loadAddress($this->getBillingAddressIdFromCart($basket));
-        $this->getLogger(__METHOD__)->error('test', $rest);
+       
         return $this->loadAddress($this->getBillingAddressIdFromCart($basket));
     }
 
