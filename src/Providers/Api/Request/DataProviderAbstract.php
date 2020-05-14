@@ -31,12 +31,14 @@ use Plenty\Modules\Order\Shipping\ParcelService\Models\ParcelServicePreset;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Modules\Payment\Models\PaymentProperty;
+use Plenty\Plugin\Log\Loggable;
 
 /**
  * Class DataProviderAbstract
  */
 abstract class DataProviderAbstract
 {
+    use Loggable;
 
     /**
      * @var ItemRepositoryContract
@@ -219,6 +221,7 @@ abstract class DataProviderAbstract
      */
     protected function getCustomerData(Address $addressObj, $customerId)
     {
+        $this->getLogger(__METHOD__)->error('payone add', $addressObj);
         $address = $addressObj->toArray();
         if (!$address) {
             return ['customerId' => $customerId];
@@ -247,7 +250,7 @@ abstract class DataProviderAbstract
         if($addressObj->gender == 'female') {
             $customerData['gender'] = 'f';
         }
-
+      $this->getLogger(__METHOD__)->error('payone cus', $customerData);
         return $customerData;
     }
 
