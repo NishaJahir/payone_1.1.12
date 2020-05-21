@@ -23,12 +23,14 @@ use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 use Plenty\Plugin\Http\Response;
 use Plenty\Plugin\Templates\Twig;
+use Plenty\Plugin\Log\Loggable;
 
 /**
  * Class CheckoutController
  */
 class CheckoutController extends Controller
 {
+    use Loggable;
     /** @var SessionHelper */
     private $sessionHelper;
 
@@ -248,7 +250,7 @@ class CheckoutController extends Controller
      */
     public function checkoutSuccess(BasketRepositoryContract $basketReopo, PaymentHelper $helper, PaymentCache $paymentCache)
     {
-
+        $this->getLogger(__METHOD__)->error('payone checkoutsuccess', $basketReopo);
         $this->logger->setIdentifier(__METHOD__);
         $this->logger->debug('Controller.Success', $this->request->all());
         $transactionBasketId = $this->request->get('transactionBasketId');
@@ -270,6 +272,7 @@ class CheckoutController extends Controller
         }
 
         $paymentCache->resetActiveBasketId();
+        $this->getLogger(__METHOD__)->error('payone place order', $basketReopo);
         return $this->response->redirectTo('place-order');
     }
 
