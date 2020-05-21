@@ -12,9 +12,11 @@ use Payone\Providers\Api\Request\AuthDataProvider;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Payment\Models\Payment;
+use Plenty\Plugin\Log\Loggable;
 
 class Auth
 {
+    use Loggable;
     /**
      * @var PaymentHelper
      */
@@ -89,8 +91,9 @@ class Auth
         }
 
         $authResponse = $this->doAuthFromBasket($basket);
-
+        $this->getLogger(__METHOD__)->error('resoinse', $authResponse);
         $payment = $this->createPayment($selectedPaymentId, $authResponse, $basket);
+        $this->getLogger(__METHOD__)->error('payment', $payment);
         $this->paymentCache->storePayment((string) $selectedPaymentId, $payment);
         $this->paymentCache->setActiveBasketId($basket->id);
 
