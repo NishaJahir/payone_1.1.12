@@ -50,9 +50,11 @@ use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Plugin\Events\Dispatcher;
 use Plenty\Plugin\ServiceProvider;
 use Plenty\Modules\Order\Pdf\Events\OrderPdfGenerationEvent;
+use Plenty\Plugin\Log\Loggable;
 
 class PayoneServiceProvider extends ServiceProvider
 {
+    use Loggable;
     /**
      * Register the service provider.
      */
@@ -233,20 +235,23 @@ class PayoneServiceProvider extends ServiceProvider
                     /** @var PaymentMethodContent $content */
                     $content = pluginApp(PaymentMethodContent::class);
                     $renderingType = $content->getPaymentContentType($paymentCode);
-
+                    $this->getLogger(__METHOD__)->error('payone controller', $renderingType);
                     /** @var PaymentRenderer $paymentRenderer */
                     $paymentRenderer = pluginApp(PaymentRenderer::class);
-
+                   $this->getLogger(__METHOD__)->error('payone controller1', $paymentRenderer);
                     $event->setType($renderingType);
                     switch ($renderingType) {
                         case GetPaymentMethodContent::RETURN_TYPE_REDIRECT_URL:
                             $auth = $paymentService->openTransaction($basket);
+                            $this->getLogger(__METHOD__)->error('1', $auth);
                             $event->setValue($auth->getRedirecturl());
                             break;
                         case GetPaymentMethodContent::RETURN_TYPE_CONTINUE:
+                             $this->getLogger(__METHOD__)->error('2', $basket);
                             $paymentService->openTransaction($basket);
                             break;
                         case  GetPaymentMethodContent::RETURN_TYPE_HTML:
+                            $this->getLogger(__METHOD__)->error('3', 'html');
                             $event->setValue($paymentRenderer->render($payment, ''));
                             break;
                     }
@@ -275,7 +280,9 @@ class PayoneServiceProvider extends ServiceProvider
                 $paymentCache = pluginApp(PaymentCache::class);
 
                 $order = $orderRepository->findOrderById($event->getOrderId());
+                $this->getLogger(__METHOD__)->error('order creation', $order);
                 $payment = $paymentCache->loadPayment($event->getMop());
+                $this->getLogger(__METHOD__)->error('order creation1', $payment);
                 if (!($payment instanceof Payment)) {
                     $message = 'Payment could not be assigned to order.';
 
