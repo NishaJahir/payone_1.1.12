@@ -480,6 +480,7 @@ abstract class DataProviderAbstract
         if(strlen($transactionBasketId)){
             $successParam = '?transactionBasketId='.$transactionBasketId;
         }
+        $this->getLogger(__METHOD__)->error('urls', $successParam);
         return [
             'success' => $this->shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess'.$successParam,
             'error' => $this->shopHelper->getPlentyDomain() . '/payment/payone/error',
